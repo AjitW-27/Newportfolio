@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../ui/Button";
-import MyImg from "../../../public/MyImg.png";
+
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden">
@@ -43,7 +43,7 @@ const Hero = () => {
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-tr from-emerald-500/20 to-transparent blur-2xl" />
 
               <img
-                src="/MyImg.png"
+                src="./myImg.png"
                 alt="Ajit Wadikar - Full Stack Developer"
                 className="relative w-full aspect-[16/12] object-cover object-center rounded-3xl border border-[var(--glass-border)]"
               />
