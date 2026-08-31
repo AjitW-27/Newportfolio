@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  base: process.env.NODE_ENV === 'production' ? '/my-Portfolio/' : '/my-Portfolio/',
+  base: '/', // <--- Changed from '/my-Portfolio/' to '/'
   plugins: [react(), tailwindcss()],
   server: {
     proxy: {
