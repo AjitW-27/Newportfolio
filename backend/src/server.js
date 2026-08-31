@@ -1,0 +1,23 @@
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const projectRoutes = require("./routes/projectRoutes");
+const blogRoutes = require("./routes/blogRoutes");
+const aiRoutes = require("./routes/aiRoutes");
+
+dotenv.config();
+const app = express();
+app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(cors({ origin: process.env.CLIENT_URL ? process.env.CLIENT_URL.split(",").map(v=>v.trim()) : true, methods:["GET","POST","PUT","PATCH","DELETE"], allowedHeaders:["Content-Type","Authorization"] }));
+app.use(express.json({ limit: "1mb" }));
+const apiLimiter=rateLimit({windowMs:15*60*1000,max:200,standardHeaders:true,legacyHeaders:false,message:{success:false,message:"Too many requests. Please try again later."}});
+app.use("/api",apiLimiter);
+app.get("/",(req,res)=>res.json({success:true,message:"Ajit Portfolio API is running",version:"1.0.0"}));
+app.get("/api/health",(req,res)=>res.json({success:true,status:"ok",service:"portfolio-api"}));
+app.post("/api/contact",(req,res)=>res.status(200).json({success:true,message:"Contact request received"}));
+app.use("/api/projects",projectRoutes); app.use("/api/blogs",blogRoutes); app.use("/api/ai",aiRoutes);
+app.use((req,res)=>res.status(404).json({success:false,message:`API route not found: ${req.method} ${req.originalUrl}`}));
+app.use((err,req,res,next)=>{console.error(err);res.status(500).json({success:false,message:"Internal server error"})});
+const PORT=process.env.PORT||5000; app.listen(PORT,()=>console.log(`Portfolio API running on port ${PORT}`));

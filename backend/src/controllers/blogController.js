@@ -1,0 +1,3 @@
+const {getBlogs}=require('../tools/blog');
+exports.getAll=(req,res)=>{let blogs=getBlogs(); const {category,search,featured}=req.query; if(category) blogs=blogs.filter(b=>b.category.toLowerCase()===category.toLowerCase()); if(search){const q=search.toLowerCase();blogs=blogs.filter(b=>JSON.stringify(b).toLowerCase().includes(q));} if(featured==='true') blogs=blogs.filter(b=>b.featured); res.json({success:true,count:blogs.length,blogs});};
+exports.getOne=(req,res)=>{const blog=getBlogs().find(b=>b.slug===req.params.slug||b.id===req.params.slug); if(!blog)return res.status(404).json({success:false,message:'Blog not found'}); res.json({success:true,blog});};
