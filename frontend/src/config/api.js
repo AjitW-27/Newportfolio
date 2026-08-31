@@ -1,4 +1,7 @@
-// In development the Vite proxy forwards /api to the Express server.
-// In production set VITE_API_URL=https://your-backend.example.com/api
-const API_URL = (import.meta.env.VITE_API_URL || "/api").replace(/\/$/, "");
+// If VITE_API_URL is provided, use it and append /api. Otherwise use /api for local proxy.
+const rawUrl = import.meta.env.VITE_API_URL || "";
+const cleanUrl = rawUrl.replace(/\/$/, "");
+
+const API_URL = cleanUrl ? `${cleanUrl}/api` : "/api";
+
 export default API_URL;
